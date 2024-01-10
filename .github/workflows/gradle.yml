@@ -23,7 +23,7 @@ jobs:
     
     # Checkout
     steps:
-    - names: Checkout
+    - name: Checkout
       uses: actions/checkout@v3
     
     # JDK Set-up
