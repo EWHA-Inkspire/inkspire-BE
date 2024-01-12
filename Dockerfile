@@ -10,4 +10,4 @@ ARG JAR_PATH=build/libs/*.jar
 COPY ${JAR_PATH} app.jar
 
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
