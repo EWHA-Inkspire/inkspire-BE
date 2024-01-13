@@ -83,7 +83,7 @@ jobs:
         context: /
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_REPO }}:latest
+        tags: ${{ secrets.DOCKER_REPO }}
 
   deploy:
     needs: build
