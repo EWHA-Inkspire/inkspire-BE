@@ -49,9 +49,8 @@ jobs:
     # application-secret.yml파일 워크 플로우에 생성
     - name: Create application-secret.yml
       run: |
-        cd ./src/main/resources
-        touch ./application-secret.yml
-        echo "${{ secrets.APPLICATION }}" > ./application-secret.yml
+        touch ./src/main/resources/application-secret.yml
+        echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application-secret.yml
       shell: bash
 
     # Grant Permission to gradle wrapper
