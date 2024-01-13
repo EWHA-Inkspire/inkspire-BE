@@ -105,8 +105,9 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            sudo docker stop prod-server
-            sudo docker rm prod-server
-            sudo docker image rm ${{ secrets.DOCKER_REPO }}
-            sudo docker pull ${{ secrets.DOCKER_REPO }}
-            sudo docker run -d -p 80:8080 ${{ secrets.DOCKER_REPO }}
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q -f status=exited)
+            docker rm $(docker ps -a -q -f status=created)
+            docker rmi $(docker images -q)
+            docker pull ${{ secrets.DOCKER_REPO }}
+            docker run -d -p 80:8080 ${{ secrets.DOCKER_REPO }}
