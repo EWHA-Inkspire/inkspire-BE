@@ -32,6 +32,17 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
+      # gradle caching
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       # 빌드 시작
       - name: Build with Gradle
         run: ./gradlew clean build
@@ -71,3 +82,4 @@ jobs:
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 360
