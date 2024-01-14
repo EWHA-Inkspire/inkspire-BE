@@ -73,4 +73,6 @@ jobs:
         username: ${{ secrets.EC2_USER_NAME }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
+          cd inkspire-BE/build/libs
           ls
+          
