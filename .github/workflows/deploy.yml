@@ -43,7 +43,7 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
-          # utcOffset: "+09:00"작
+          utcOffset: "+09:00"
 
       # 시간 보여주기
       - name: Show current time
