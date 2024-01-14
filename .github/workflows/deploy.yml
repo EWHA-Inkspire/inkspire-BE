@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - dev
+      - chore/#12_ci-cd-setting
   pull_request:
     branches:
       - dev
