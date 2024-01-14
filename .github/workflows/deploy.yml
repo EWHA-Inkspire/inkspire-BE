@@ -4,11 +4,10 @@ on:
   # 깃헙 액션 트리거
   push:
     branches:
-      - dev
       - chore/#12_ci-cd-setting
-  pull_request:
-    branches:
-      - dev
+  # pull_request:
+  #   branches:
+  #     - dev
   workflow_dispatch: # 수동 실행 가능
 
 jobs:
