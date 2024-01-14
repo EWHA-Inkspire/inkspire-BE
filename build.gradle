@@ -34,3 +34,10 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+	archiveBaseName.set('inkspire-BE')
+}
+jar{
+	archiveBaseName.set('inkspire-BE')
+}
