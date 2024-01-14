@@ -84,8 +84,7 @@ jobs:
         username: ${{ secrets.EC2_USER_NAME }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          cd ..
-          ls
+          whoami
           # cd inkspire-BE/build/libs
           # rm -r nohup.out
           # nohup java -jar inkspire-BE-0.0.1-SNAPSHOT.jar &
