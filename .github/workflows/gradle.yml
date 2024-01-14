@@ -44,6 +44,7 @@ jobs:
     # application-secret.yml 추가
     - name: Create application-secret.yml
       run: |
+        mkdir ./src/main/resources
         touch ./src/main/resources/application.yml
         echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application.yml
       shell: bash
