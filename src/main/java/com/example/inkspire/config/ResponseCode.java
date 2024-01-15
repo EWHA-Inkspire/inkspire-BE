@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 @Getter
 @RequiredArgsConstructor
 public enum ResponseCode {
-    OK(0, HttpStatus.OK, "Ok"),
+    OK(200, HttpStatus.OK, "Ok"),
     BAD_REQUEST(400, HttpStatus.BAD_REQUEST, "Bad request"),
     INTERNAL_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
 
