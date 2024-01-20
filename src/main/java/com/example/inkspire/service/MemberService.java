@@ -1,8 +1,6 @@
 package com.example.inkspire.service;
 
-import com.example.inkspire.config.ResponseCode;
 import com.example.inkspire.dto.MemberDto;
-import com.example.inkspire.dto.ResponseDto;
 import com.example.inkspire.entity.Member;
 import com.example.inkspire.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +15,16 @@ public class MemberService {
     private PasswordEncoder passwordEncoder;
 
     /* 회원가입 */
-    public ResponseDto createMember(MemberDto memberDto) {
+    public boolean createMember(MemberDto memberDto) {
         Member member = new Member();
 
         // 이메일 중복 검증 & null 값 혹은 빈 값 검사
         if (isNullValue(memberDto)) {
-            return ResponseDto.of(false, ResponseCode.BAD_REQUEST, "중복된 이메일 주소입니다.");
+            return false;
         }
 
         if (!validateDuplicated(memberDto)) {
-            return ResponseDto.of(false, ResponseCode.BAD_REQUEST, "잘못된 입력입니다.");
+            return false;
         }
 
         String encodedPw = passwordEncoder.encode(memberDto.getPassword());
@@ -34,10 +32,11 @@ public class MemberService {
         member.setEmail(memberDto.getEmail());
         member.setPassword(encodedPw);
         member.setNickname(memberDto.getNickname());
+        member.setTitle("초보 사서");
 
         memberRepository.save(member);
 
-        return ResponseDto.of(true, ResponseCode.OK, "회원가입 성공.");
+        return true;
     }
 
     private boolean isNullValue(MemberDto memberDto) {
