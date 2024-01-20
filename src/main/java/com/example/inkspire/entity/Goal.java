@@ -16,10 +16,6 @@ public class Goal {
     @JoinColumn(name = "script_id", nullable = false)
     private Script script;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "common_code_id", nullable = false)
-    private CommonCode type;
-
     @Column(name = "chapter", nullable = false)
     private Integer chapter;
 
@@ -28,6 +24,10 @@ public class Goal {
 
     @Column(name = "required", nullable = false)
     private String required;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "common_code_id", nullable = false)
+    private CommonCode type;
 
     @Column(name = "etc", nullable = false)
     private String etc;
