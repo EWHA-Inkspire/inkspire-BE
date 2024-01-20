@@ -25,6 +25,6 @@ public class MemberController {
         if (memberService.createMember(memberDto)) {
             return new ResponseEntity<>(ResponseDto.of(true, ResponseCode.OK, "회원가입 성공."), HttpStatus.OK);
         }
-        throw new GeneralException(ResponseCode.BAD_REQUEST, "잘못된 입력값입니다.");
+        return new ResponseEntity<>(ResponseDto.of(false, ResponseCode.BAD_REQUEST, "잘못된 입력값입니다."), HttpStatus.BAD_REQUEST);
     }
 }
