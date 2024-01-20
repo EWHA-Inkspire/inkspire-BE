@@ -6,12 +6,15 @@ import com.example.inkspire.dto.ResponseDto;
 import com.example.inkspire.entity.Member;
 import com.example.inkspire.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /* 회원가입 */
     public ResponseDto createMember(MemberDto memberDto) {
@@ -26,8 +29,10 @@ public class MemberService {
             return ResponseDto.of(false, ResponseCode.BAD_REQUEST, "잘못된 입력입니다.");
         }
 
+        String encodedPw = passwordEncoder.encode(memberDto.getPassword());
+
         member.setEmail(memberDto.getEmail());
-        member.setPassword(memberDto.getPassword());
+        member.setPassword(encodedPw);
         member.setNickname(memberDto.getNickname());
 
         memberRepository.save(member);
