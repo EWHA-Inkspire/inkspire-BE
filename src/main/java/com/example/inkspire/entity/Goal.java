@@ -22,8 +22,8 @@ public class Goal {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "require", nullable = false)
-    private String require;
+    @Column(name = "required", nullable = false)
+    private String required;
 
     // TODO: common_code 테이블로 관리할 사항 많아질 경우 수정하기
     @Column(name = "type", nullable = false)
