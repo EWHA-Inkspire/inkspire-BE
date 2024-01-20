@@ -16,8 +16,9 @@ public class Train {
     @JoinColumn(name = "script_id", nullable = false)
     private Script script;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "common_code_id", nullable = false)
+    private CommonCode role;
 
     @Column(name = "content", nullable = false)
     private String content;

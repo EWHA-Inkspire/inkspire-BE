@@ -16,13 +16,13 @@ public class Item {
     @JoinColumn(name = "map_id", nullable = false)
     private Map map;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "common_code_id", nullable = false)
+    private CommonCode type;
+
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "detail")
     private String detail;
-
-    // TODO: common_code 테이블로 관리할 사항 많아질 경우 수정하기
-    @Column(name = "type", nullable = false)
-    private String type;
 }

@@ -16,15 +16,15 @@ public class Script {
     @JoinColumn(name = "character_id", nullable = false)
     private Characters characters;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "common_code_id", nullable = false)
+    private CommonCode genre;
+
     @Column(name = "time", nullable = false)
     private String time;
 
     @Column(name = "place", nullable = false)
     private String place;
-
-    // TODO: common_code 테이블로 관리할 사항 많아질 경우 수정하기
-    @Column(name = "genre", nullable = false)
-    private String genre;
 
     @Column(name = "universe")
     private String universe;
