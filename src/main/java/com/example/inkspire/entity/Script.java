@@ -22,6 +22,7 @@ public class Script {
     @Column(name = "place", nullable = false)
     private String place;
 
+    // TODO: common_code 테이블로 관리할 사항 많아질 경우 수정하기
     @Column(name = "genre", nullable = false)
     private String genre;
 
