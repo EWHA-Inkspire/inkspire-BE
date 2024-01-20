@@ -14,7 +14,7 @@ public class Script {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "character_id", nullable = false)
-    private Character character;
+    private Characters characters;
 
     @Column(name = "time", nullable = false)
     private String time;
