@@ -25,7 +25,7 @@ public class WebSecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) -> {
-                        authorizeRequests.requestMatchers("/", "/user/signup").permitAll();
+                        authorizeRequests.requestMatchers("/", "/user/signup", "/test").permitAll();
                         authorizeRequests.anyRequest().authenticated();
                 });
         return http.build();
