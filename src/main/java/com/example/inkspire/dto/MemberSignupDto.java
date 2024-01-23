@@ -9,4 +9,9 @@ public class MemberDto {
     private String email;
     private String password;
     private String nickname;
+
+    public MemberDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

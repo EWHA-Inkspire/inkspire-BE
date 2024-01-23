@@ -1,17 +1,18 @@
 package com.example.inkspire.controller;
 
 import com.example.inkspire.config.GeneralException;
-import com.example.inkspire.config.ResponseCode;
-import com.example.inkspire.dto.MemberDto;
-import com.example.inkspire.dto.ResponseDto;
+import com.example.inkspire.dto.*;
 import com.example.inkspire.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,10 +22,13 @@ public class MemberController {
 
     /* 회원가입 */
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto> signup(@RequestBody MemberDto memberDto) {
-        if (memberService.createMember(memberDto)) {
-            return new ResponseEntity<>(ResponseDto.of(true, ResponseCode.OK, "회원가입 성공."), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(ResponseDto.of(false, ResponseCode.BAD_REQUEST, "잘못된 입력값입니다."), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseDto> signup(@Validated @RequestBody MemberSignupDto memberSignupDto) {
+        return new ResponseEntity<>(memberService.createMember(memberSignupDto), HttpStatus.OK);
+    }
+
+    /* 로그인 */
+    @PostMapping("/login")
+    public ResponseEntity<DataResponseDto<MemberInfoDto>> login(@Validated @RequestBody Map<String, String> map) {
+        return new ResponseEntity<>(memberService.join(map.get("email"), map.get("password")), HttpStatus.OK);
     }
 }
