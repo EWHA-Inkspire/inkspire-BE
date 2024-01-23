@@ -19,11 +19,7 @@ public class MemberService {
         Member member = new Member();
 
         // 이메일 중복 검증 & null 값 혹은 빈 값 검사
-        if (isNullValue(memberDto)) {
-            return false;
-        }
-
-        if (!validateDuplicated(memberDto)) {
+        if (isNullValue(memberDto) || !validateDuplicated(memberDto)) {
             return false;
         }
 
@@ -32,7 +28,6 @@ public class MemberService {
         member.setEmail(memberDto.getEmail());
         member.setPassword(encodedPw);
         member.setNickname(memberDto.getNickname());
-        member.setTitle("초보 사서");
 
         memberRepository.save(member);
 

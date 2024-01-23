@@ -20,7 +20,4 @@ public class Member {
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
-
-    @Column(name = "title", nullable = false)
-    private String title;
 }
