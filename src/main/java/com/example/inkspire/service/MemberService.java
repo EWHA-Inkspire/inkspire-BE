@@ -11,6 +11,8 @@ import com.example.inkspire.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MemberService {
     @Autowired
@@ -38,6 +40,7 @@ public class MemberService {
         return memberRepository.findByEmail(memberSignupDto.getEmail()) == null;
     }
 
+    /* 로그인 */
     public DataResponseDto<Long> join(String email, String password) {
         Member member = memberRepository.findByEmail(email);
 
@@ -45,5 +48,16 @@ public class MemberService {
             throw new GeneralException(ResponseCode.BAD_REQUEST, "로그인 실패");
         }
         return DataResponseDto.of(member.getId(), "로그인 성공");
+    }
+
+    /* 프로필 정보 조회 */
+    public DataResponseDto<MemberInfoDto> getMemberInfo(Long memberId) {
+        Optional<MemberInfoDto> memberInfo = memberRepository.findMemberInfoBy(memberId);
+
+        if (memberInfo.isPresent()) {
+            return DataResponseDto.of(memberInfo.get());
+        } else {
+            throw new GeneralException(ResponseCode.BAD_REQUEST, "회원 정보 없음");
+        }
     }
 }
