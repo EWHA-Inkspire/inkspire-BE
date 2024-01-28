@@ -1,5 +1,6 @@
 package com.example.inkspire.controller;
 
+import com.example.inkspire.dto.ChapterListDto;
 import com.example.inkspire.dto.CharacterListDto;
 import com.example.inkspire.dto.DataResponseDto;
 import com.example.inkspire.service.CharacterService;
@@ -22,5 +23,11 @@ public class CharacterController {
     @GetMapping("/characterList")
     public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@Validated @RequestParam Long id) {
         return new ResponseEntity<>(characterService.getCharacterList(id), HttpStatus.OK);
+    }
+
+    /* 생성된 챕터 리스트 조회 */
+    @GetMapping("/chapterList")
+    public ResponseEntity<DataResponseDto<ChapterListDto>> getChapterList(@Validated @RequestParam Long id) {
+        return new ResponseEntity<>(characterService.getChapterList(id), HttpStatus.OK);
     }
 }
