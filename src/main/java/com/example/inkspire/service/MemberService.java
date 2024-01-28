@@ -38,12 +38,12 @@ public class MemberService {
         return memberRepository.findByEmail(memberSignupDto.getEmail()) == null;
     }
 
-    public DataResponseDto<MemberInfoDto> join(String email, String password) {
+    public DataResponseDto<Long> join(String email, String password) {
         Member member = memberRepository.findByEmail(email);
 
         if (!member.getPassword().equals(password)) {
             throw new GeneralException(ResponseCode.BAD_REQUEST, "로그인 실패");
         }
-        return DataResponseDto.of(new MemberInfoDto(member.getId(), member.getEmail(), member.getNickname()), "로그인 성공");
+        return DataResponseDto.of(member.getId(), "로그인 성공");
     }
 }

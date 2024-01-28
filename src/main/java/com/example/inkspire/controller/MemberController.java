@@ -27,7 +27,7 @@ public class MemberController {
 
     /* 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<DataResponseDto<MemberInfoDto>> login(@Validated @RequestBody Map<String, String> map) {
+    public ResponseEntity<DataResponseDto<Long>> login(@Validated @RequestBody Map<String, String> map) {
         return new ResponseEntity<>(memberService.join(map.get("email"), map.get("password")), HttpStatus.OK);
     }
 }
