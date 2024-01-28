@@ -1,6 +1,5 @@
 package com.example.inkspire.controller;
 
-import com.example.inkspire.config.GeneralException;
 import com.example.inkspire.dto.*;
 import com.example.inkspire.service.MemberService;
 import lombok.RequiredArgsConstructor;
