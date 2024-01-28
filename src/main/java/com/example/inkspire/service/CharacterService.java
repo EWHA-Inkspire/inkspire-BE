@@ -1,5 +1,6 @@
 package com.example.inkspire.service;
 
+import com.example.inkspire.dto.ChapterListDto;
 import com.example.inkspire.dto.CharacterInfoDto;
 import com.example.inkspire.dto.CharacterListDto;
 import com.example.inkspire.dto.DataResponseDto;
@@ -35,5 +36,12 @@ public class CharacterService {
             // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
             return DataResponseDto.of(new CharacterListDto());
         }
+    }
+
+    /* 캐릭터 별 생성된 챕터 리스트 조회 */
+    public DataResponseDto<ChapterListDto> getChapterList(Long id) {
+        List<Integer> chapterList = characterRepository.findChapterByCharacterId(id);
+
+        return DataResponseDto.of(new ChapterListDto(chapterList));
     }
 }
