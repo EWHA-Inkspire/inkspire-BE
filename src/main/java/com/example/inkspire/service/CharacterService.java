@@ -1,10 +1,8 @@
 package com.example.inkspire.service;
 
-import com.example.inkspire.dto.ChapterListDto;
-import com.example.inkspire.dto.CharacterInfoDto;
-import com.example.inkspire.dto.CharacterListDto;
-import com.example.inkspire.dto.DataResponseDto;
+import com.example.inkspire.dto.*;
 import com.example.inkspire.entity.Characters;
+import com.example.inkspire.entity.Member;
 import com.example.inkspire.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +41,23 @@ public class CharacterService {
         List<Integer> chapterList = characterRepository.findChapterByCharacterId(id);
 
         return DataResponseDto.of(new ChapterListDto(chapterList));
+    }
+
+    /* 캐릭터 생성 */
+    public DataResponseDto<Long> createCharacter(CharacterDto characterDto) {
+        Characters character = new Characters();
+
+        character.setMember(Member.builder().id(characterDto.getMemberId()).build());
+        character.setName(characterDto.getName());
+        character.setLuck(characterDto.getLuck());
+        character.setDefense(characterDto.getDefense());
+        character.setMental(characterDto.getMental());
+        character.setAgility(characterDto.getAgility());
+        character.setAttack(characterDto.getAttack());
+        character.setHp(characterDto.getHp());
+
+        Characters saved = characterRepository.save(character);
+
+        return DataResponseDto.of(saved.getId());
     }
 }
