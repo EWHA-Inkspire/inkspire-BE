@@ -1,12 +1,14 @@
 package com.example.inkspire.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommonCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
