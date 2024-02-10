@@ -31,6 +31,6 @@ public class CharacterController {
     @PostMapping
     public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody @Valid CharacterDto characterDto) {
         DataResponseDto<Long> response = characterService.createCharacter(characterDto);
-        return new ResponseEntity<>(characterService.createCharacter(characterDto), HttpStatus.valueOf(response.getCode()));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 }
