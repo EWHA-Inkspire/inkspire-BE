@@ -1,6 +1,5 @@
 package com.example.inkspire.user;
 
-import com.example.inkspire.character.model.Character;
 import com.example.inkspire.character.model.CharacterInfoDto;
 import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
@@ -13,7 +12,6 @@ import com.example.inkspire.user.model.SignupDto;
 import com.example.inkspire.user.model.User;
 import com.example.inkspire.user.model.UserInfoDto;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

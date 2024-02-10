@@ -1,7 +1,6 @@
 package com.example.inkspire.common;
 
 import com.example.inkspire.common.errors.ErrorCode;
-import java.util.HashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

@@ -1,6 +1,5 @@
 package com.example.inkspire.user;
 
-import com.example.inkspire.character.model.Character;
 import com.example.inkspire.character.model.CharacterInfoDto;
 import com.example.inkspire.user.model.User;
 import com.example.inkspire.user.model.UserInfoDto;

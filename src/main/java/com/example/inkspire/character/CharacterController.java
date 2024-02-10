@@ -2,7 +2,6 @@ package com.example.inkspire.character;
 
 import com.example.inkspire.character.model.ChapterListDto;
 import com.example.inkspire.character.model.CharacterDto;
-import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
