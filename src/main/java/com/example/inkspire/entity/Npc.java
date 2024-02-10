@@ -23,5 +23,5 @@ public class Npc {
     private String greeting;
 
     @Column(name = "is_pnpc", nullable = false)
-    private boolean is_pnpc;
+    private boolean isPnpc;
 }
