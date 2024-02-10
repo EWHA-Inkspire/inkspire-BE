@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MapDto {
+    private Long scriptId;
     private String name;
     private Integer chapter;
     private String eventTrigger;
