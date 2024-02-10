@@ -17,26 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/character")
+@RequestMapping("/characters")
 public class CharacterController {
     private final CharacterService characterService;
 
-    /* 캐릭터 리스트 조회 */
-    @GetMapping("/characterList/{userId}")
-    public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@PathVariable Long userId) {
-        DataResponseDto<CharacterListDto> response = characterService.getCharacterList(userId);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
-    }
-
     /* 생성된 챕터 리스트 조회 */
-    @GetMapping("/chapterList/{characterId}")
+    @GetMapping("{characterId}/chapterList")
     public ResponseEntity<DataResponseDto<ChapterListDto>> getChapterList(@PathVariable Long characterId) {
         DataResponseDto<ChapterListDto> response = characterService.getChapterList(characterId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* 캐릭터 정보 저장 */
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody @Valid CharacterDto characterDto) {
         DataResponseDto<Long> response = characterService.createCharacter(characterDto);
         return new ResponseEntity<>(characterService.createCharacter(characterDto), HttpStatus.valueOf(response.getCode()));

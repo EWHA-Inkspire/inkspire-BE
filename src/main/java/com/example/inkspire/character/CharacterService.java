@@ -3,12 +3,9 @@ package com.example.inkspire.character;
 import com.example.inkspire.character.model.ChapterListDto;
 import com.example.inkspire.character.model.Character;
 import com.example.inkspire.character.model.CharacterDto;
-import com.example.inkspire.character.model.CharacterInfoDto;
-import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.user.model.User;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +13,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CharacterService {
     private final CharacterRepository characterRepository;
-
-    /* 캐릭터 리스트 조회 */
-    public DataResponseDto<CharacterListDto> getCharacterList(Long id) {
-        List<Character> characterList = characterRepository.findAllByUserId(id);
-
-        if (characterList.isEmpty()) {
-            // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
-            return DataResponseDto.of(new CharacterListDto());
-        } else {
-            List<CharacterInfoDto> results = characterList.stream()
-                    .map(character -> new CharacterInfoDto(
-                            character.getId(),
-                            character.getName(),
-                            character.getSuccess(),
-                            character.getFail()))
-                    .collect(Collectors.toList());
-
-            return DataResponseDto.of(new CharacterListDto(results));
-        }
-    }
 
     /* 캐릭터 별 생성된 챕터 리스트 조회 */
     public DataResponseDto<ChapterListDto> getChapterList(Long id) {

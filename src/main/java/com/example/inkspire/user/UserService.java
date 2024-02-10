@@ -1,5 +1,8 @@
 package com.example.inkspire.user;
 
+import com.example.inkspire.character.model.Character;
+import com.example.inkspire.character.model.CharacterInfoDto;
+import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.common.ResponseDto;
 import com.example.inkspire.common.errors.ErrorCode;
@@ -9,6 +12,8 @@ import com.example.inkspire.user.model.LoginDto;
 import com.example.inkspire.user.model.SignupDto;
 import com.example.inkspire.user.model.User;
 import com.example.inkspire.user.model.UserInfoDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -68,6 +73,26 @@ public class UserService {
         String encryptedPw = ShaUtil.getEncryptPw(password, salt);
 
         return encryptedPw.equals(user.getPassword());
+    }
+
+    /* 캐릭터 리스트 조회 */
+    public DataResponseDto<CharacterListDto> getCharacterList(Long id) {
+        List<Character> characterList = userRepository.findCharactersByUserId(id);
+
+        if (characterList.isEmpty()) {
+            // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
+            return DataResponseDto.of(new CharacterListDto());
+        } else {
+            List<CharacterInfoDto> results = characterList.stream()
+                    .map(character -> new CharacterInfoDto(
+                            character.getId(),
+                            character.getName(),
+                            character.getSuccess(),
+                            character.getFail()))
+                    .collect(Collectors.toList());
+
+            return DataResponseDto.of(new CharacterListDto(results));
+        }
     }
 
     /* 프로필 정보 조회 */

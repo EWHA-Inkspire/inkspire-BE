@@ -1,5 +1,6 @@
 package com.example.inkspire.user;
 
+import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.common.ResponseDto;
 import com.example.inkspire.user.model.LoginDto;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,6 +35,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<DataResponseDto<Long>> login(@RequestBody @Valid LoginDto loginDto) {
         return new ResponseEntity<>(userService.join(loginDto), HttpStatus.OK);
+    }
+
+    /* 캐릭터 리스트 조회 */
+    @GetMapping("{userId}/characterList")
+    public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@PathVariable Long userId) {
+        DataResponseDto<CharacterListDto> response = userService.getCharacterList(userId);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* 프로필 정보 조회 */
