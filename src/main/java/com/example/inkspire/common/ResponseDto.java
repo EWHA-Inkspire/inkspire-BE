@@ -1,6 +1,7 @@
 package com.example.inkspire.common;
 
 import com.example.inkspire.common.errors.ErrorCode;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -21,5 +22,9 @@ public class ResponseDto {
 
     public static ResponseDto error(ErrorCode errorCode, Exception e) {
         return new ResponseDto(false, errorCode.getCode(), errorCode.getErrorMessage(e));
+    }
+
+    public static ResponseDto error(ErrorCode errorCode, String message) {
+        return new ResponseDto(false, errorCode.getCode(), errorCode.getErrorMessage(message));
     }
 }

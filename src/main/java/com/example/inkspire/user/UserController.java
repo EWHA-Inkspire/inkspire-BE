@@ -2,6 +2,7 @@ package com.example.inkspire.user;
 
 import com.example.inkspire.common.ResponseDto;
 import com.example.inkspire.user.model.SignupDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto> signup(@RequestBody SignupDto signupDto) {
+    public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupDto signupDto) {
         ResponseDto response = userService.createMember(signupDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
