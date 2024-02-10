@@ -77,21 +77,17 @@ public class UserService {
 
     /* 캐릭터 리스트 조회 */
     public DataResponseDto<CharacterListDto> getCharacterList(Long id) {
-        List<Character> characterList = userRepository.findCharactersByUserId(id);
+        // 유저가 존재하는지 검증
+        userRepository.findById(id)
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+
+        List<CharacterInfoDto> characterList = userRepository.findCharactersByUserId(id);
 
         if (characterList.isEmpty()) {
             // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
             return DataResponseDto.of(new CharacterListDto());
         } else {
-            List<CharacterInfoDto> results = characterList.stream()
-                    .map(character -> new CharacterInfoDto(
-                            character.getId(),
-                            character.getName(),
-                            character.getSuccess(),
-                            character.getFail()))
-                    .collect(Collectors.toList());
-
-            return DataResponseDto.of(new CharacterListDto(results));
+            return DataResponseDto.of(new CharacterListDto(characterList));
         }
     }
 

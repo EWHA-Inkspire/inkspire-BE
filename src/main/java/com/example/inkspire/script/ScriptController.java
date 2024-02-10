@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/script")
+@RequestMapping("/scripts")
 public class ScriptController {
     private final ScriptService scriptService;
 
     /* 스크립트 정보 저장 */
-    @PostMapping("/create/{characterId}")
+    @PostMapping("/{characterId}")
     public ResponseEntity<DataResponseDto<Long>> createScript(@RequestBody ScriptDto scriptDto, @PathVariable Long characterId) {
         DataResponseDto<Long> response = scriptService.createScript(scriptDto, characterId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
@@ -28,14 +28,14 @@ public class ScriptController {
 
     /* npc 정보 저장 */
     @PostMapping("/{scriptId}/npc")
-    public ResponseEntity<DataResponseDto<Long>> createNpc(@RequestBody NpcInfoDto npcInfoDto) {
+    public ResponseEntity<DataResponseDto<Long>> createNpc(@RequestBody NpcInfoDto npcInfoDto, @PathVariable Long scriptId) {
         DataResponseDto<Long> response = scriptService.createNpc(npcInfoDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* 맵 정보 저장 */
     @PostMapping("/{scriptId}/map")
-    public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody MapDto mapDto, Long scriptId) {
+    public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody MapDto mapDto, @PathVariable Long scriptId) {
         DataResponseDto<Long> response = scriptService.createMap(mapDto, scriptId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }

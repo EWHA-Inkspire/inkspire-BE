@@ -1,6 +1,7 @@
 package com.example.inkspire.user;
 
 import com.example.inkspire.character.model.Character;
+import com.example.inkspire.character.model.CharacterInfoDto;
 import com.example.inkspire.user.model.User;
 import com.example.inkspire.user.model.UserInfoDto;
 import java.util.List;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT * FROM characters c WHERE c.user_id = :userId", nativeQuery = true)
-    List<Character> findCharactersByUserId(Long userId);
+    @Query(value = "SELECT c.id, c.name, c.success, c.fail FROM characters c WHERE c.user_id = :userId", nativeQuery = true)
+    List<CharacterInfoDto> findCharactersByUserId(Long userId);
 
     @Query(value = "SELECT u.id, u.email, u.nickname, COUNT(s.id) AS endingCount "
             + "FROM user u "
