@@ -20,7 +20,6 @@ public class UserService {
 
     /* 회원가입 */
     public ResponseDto createMember(SignupDto signupDto) {
-        User user = new User();
 
         // 이메일 중복 검증
         if (!validateDuplicated(signupDto.getEmail())) {
@@ -32,10 +31,11 @@ public class UserService {
         String encryptedPw = ShaUtil.getEncryptPw(signupDto.getPassword(), salt);
 
         // 유저 정보 추가
-        user.setEmail(signupDto.getEmail());
-        user.setNickname(signupDto.getNickname());
-        user.setSalt(salt);
-        user.setPassword(encryptedPw);
+        User user = User.builder().email(signupDto.getEmail())
+                .nickname(signupDto.getNickname())
+                .salt(salt)
+                .password(encryptedPw)
+                .build();
 
         userRepository.save(user);
 
@@ -71,8 +71,8 @@ public class UserService {
     }
 
     /* 프로필 정보 조회 */
-    public DataResponseDto<UserInfoDto> getMemberInfo(Long memberId) {
-        UserInfoDto userInfo = userRepository.findMemberInfoById(memberId)
+    public DataResponseDto<UserInfoDto> gerUserInfo(Long userId) {
+        UserInfoDto userInfo = userRepository.findMemberInfoById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
 
         return DataResponseDto.of(userInfo);

@@ -6,11 +6,9 @@ import com.example.inkspire.user.model.LoginDto;
 import com.example.inkspire.user.model.SignupDto;
 import com.example.inkspire.user.model.UserInfoDto;
 import jakarta.validation.Valid;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +39,6 @@ public class UserController {
     /* 프로필 정보 조회 */
     @GetMapping("/profile")
     public ResponseEntity<DataResponseDto<UserInfoDto>> profile(@RequestParam @Valid Long id) {
-        return new ResponseEntity<>(userService.getMemberInfo(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.gerUserInfo(id), HttpStatus.OK);
     }
 }

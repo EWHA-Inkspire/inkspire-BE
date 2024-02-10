@@ -13,9 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT u.id, u.email, u.nickname, COUNT(s.id) AS endingCount "
             + "FROM user u "
-            + "JOIN characters c ON u.id = c.user_id "
+            + "LEFT JOIN characters c ON u.id = c.user_id "
             + "LEFT JOIN script s ON c.id = s.character_id AND s.ending = true "
             + "WHERE u.id = :userId "
-            + "GROUP BY u.id, u.email, u.nickname", nativeQuery = true)
+            + "GROUP BY u.id, u.email, u.nickname "
+            + "limit 1", nativeQuery = true)
     Optional<UserInfoDto> findMemberInfoById(Long userId);
 }

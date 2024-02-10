@@ -24,14 +24,13 @@ public class ScriptService {
 
     /* 스크립트 정보 저장 */
     public DataResponseDto<Long> createScript(ScriptDto scriptDto, Long characterId) {
-        Script script = new Script();
-
         // 존재하지 않는 장르일 경우 예외 처리
         if (CommonCode.of(COMMON_CODE, scriptDto.getGenre()).equals(CommonCode.NOT_FOUND)) {
             throw new GeneralException(ErrorCode.GENRE_NOT_FOUND);
         }
 
-        Script.builder().character(Character.builder().id(characterId).build())
+        Script script = Script.builder()
+                .character(Character.builder().id(characterId).build())
                 .time(scriptDto.getTime())
                 .place(scriptDto.getPlace())
                 .genre(CommonCode.of(COMMON_CODE, scriptDto.getGenre()))
@@ -44,9 +43,7 @@ public class ScriptService {
 
     /* npc 정보 저장 */
     public DataResponseDto<Long> createNpc(NpcInfoDto npcInfoDto) {
-        Npc npc = new Npc();
-
-        Npc.builder().name(npcInfoDto.getName())
+        Npc npc = Npc.builder().name(npcInfoDto.getName())
                 .map(Map.builder().id(npcInfoDto.getMapId()).build())
                 .isPnpc(npcInfoDto.isPnpc())
                 .greeting(npcInfoDto.getGreeting())
@@ -59,12 +56,11 @@ public class ScriptService {
 
     /* 맵 정보 저장 */
     public DataResponseDto<Long> createMap(MapDto mapDto, Long scriptId) {
-        Map map = new Map();
-
-        Map.builder().script(Script.builder().id(scriptId).build())
+        Map map = Map.builder()
+                .script(Script.builder().id(scriptId).build())
                 .name(mapDto.getName())
                 .chapter(mapDto.getChapter())
-                .eventTrigger(map.getEventTrigger())
+                .eventTrigger(mapDto.getEventTrigger())
                 .eventType(mapDto.getEventType())
                 .lastVisited(false)
                 .build();

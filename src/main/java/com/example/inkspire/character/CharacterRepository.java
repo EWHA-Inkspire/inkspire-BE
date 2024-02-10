@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<Character, Long> {
-    Optional<Character> findAllByUserId(Long userId);
+    List<Character> findAllByUserId(Long userId);
 
     // 캐릭터 별 목표가 생성된 챕터 조회
     @Query(value = "SELECT g.chapter " +

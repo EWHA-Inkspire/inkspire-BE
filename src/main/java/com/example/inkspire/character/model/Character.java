@@ -57,4 +57,21 @@ public class Character extends BaseTime {
 
     @Column(name = "fail")
     private String fail;
+
+    @Override
+    public String toString() {
+        return "Character{" +
+                "id=" + id +
+                ", user=" + user +
+                ", name='" + name + '\'' +
+                ", luck=" + luck +
+                ", defense=" + defense +
+                ", mental=" + mental +
+                ", agility=" + agility +
+                ", attack=" + attack +
+                ", hp=" + hp +
+                ", success='" + success + '\'' +
+                ", fail='" + fail + '\'' +
+                '}';
+    }
 }

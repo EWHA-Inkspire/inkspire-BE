@@ -8,7 +8,6 @@ import com.example.inkspire.character.model.CharacterListDto;
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.user.model.User;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,9 +19,12 @@ public class CharacterService {
 
     /* 캐릭터 리스트 조회 */
     public DataResponseDto<CharacterListDto> getCharacterList(Long id) {
-        Optional<Character> characterList = characterRepository.findAllByUserId(id);
+        List<Character> characterList = characterRepository.findAllByUserId(id);
 
-        if (characterList.isPresent()) {
+        if (characterList.isEmpty()) {
+            // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
+            return DataResponseDto.of(new CharacterListDto());
+        } else {
             List<CharacterInfoDto> results = characterList.stream()
                     .map(character -> new CharacterInfoDto(
                             character.getId(),
@@ -32,9 +34,6 @@ public class CharacterService {
                     .collect(Collectors.toList());
 
             return DataResponseDto.of(new CharacterListDto(results));
-        } else {
-            // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
-            return DataResponseDto.of(new CharacterListDto());
         }
     }
 
@@ -47,9 +46,8 @@ public class CharacterService {
 
     /* 캐릭터 생성 */
     public DataResponseDto<Long> createCharacter(CharacterDto characterDto) {
-        Character character = new Character();
-
-        Character.builder().user(User.builder().id(characterDto.getUserId()).build())
+        Character character = Character.builder()
+                .user(User.builder().id(characterDto.getUserId()).build())
                 .name(characterDto.getName())
                 .luck(characterDto.getLuck())
                 .defense(characterDto.getDefense())

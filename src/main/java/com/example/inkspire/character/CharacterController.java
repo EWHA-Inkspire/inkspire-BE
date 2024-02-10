@@ -23,14 +23,14 @@ public class CharacterController {
 
     /* 캐릭터 리스트 조회 */
     @GetMapping("/characterList/{userId}")
-    public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@Valid @PathVariable Long userId) {
+    public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@PathVariable Long userId) {
         DataResponseDto<CharacterListDto> response = characterService.getCharacterList(userId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* 생성된 챕터 리스트 조회 */
     @GetMapping("/chapterList/{characterId}")
-    public ResponseEntity<DataResponseDto<ChapterListDto>> getChapterList(@Valid @PathVariable Long characterId) {
+    public ResponseEntity<DataResponseDto<ChapterListDto>> getChapterList(@PathVariable Long characterId) {
         DataResponseDto<ChapterListDto> response = characterService.getChapterList(characterId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
