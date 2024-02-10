@@ -1,4 +1,4 @@
-package com.example.inkspire.test.model;
+package com.example.inkspire.example.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
