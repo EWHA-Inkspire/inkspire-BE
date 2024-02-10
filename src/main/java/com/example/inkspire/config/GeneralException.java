@@ -1,8 +1,6 @@
 package com.example.inkspire.config;
 
-import com.example.inkspire.config.ResponseCode;
 import lombok.Getter;
-import org.apache.coyote.Response;
 
 @Getter
 public class GeneralException extends RuntimeException {
