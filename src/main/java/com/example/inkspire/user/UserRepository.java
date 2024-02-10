@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT c.id, c.name, c.success, c.fail FROM characters c WHERE c.user_id = :userId", nativeQuery = true)
     List<CharacterInfoDto> findCharactersByUserId(Long userId);
 
-    @Query(value = "SELECT u.id, u.email, u.nickname, COUNT(s.id) AS endingCount "
+    @Query(value = "SELECT u.email, u.nickname, COUNT(s.id) AS endingCount "
             + "FROM user u "
             + "LEFT JOIN characters c ON u.id = c.user_id "
             + "LEFT JOIN script s ON c.id = s.character_id AND s.ending = true "
