@@ -23,11 +23,11 @@ public class Map {
     private Integer chapter;
 
     @Column(name = "event_trigger")
-    private String event_trigger;
+    private String eventTrigger;
 
     @Column(name = "eventy_type")
-    private String event_type;
+    private String eventType;
 
     @Column(name = "last_visited", nullable = false)
-    private boolean last_visited;
+    private boolean lastVisited;
 }
