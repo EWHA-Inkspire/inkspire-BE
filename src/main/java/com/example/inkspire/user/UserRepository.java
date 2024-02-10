@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT m.id, m.email, m.nickname, COUNT(s.id) AS endingCount "
-            + "FROM member m "
-            + "JOIN characters c ON m.id = c.member_id "
+    @Query(value = "SELECT u.id, u.email, u.nickname, COUNT(s.id) AS endingCount "
+            + "FROM user u "
+            + "JOIN characters c ON u.id = c.user_id "
             + "LEFT JOIN script s ON c.id = s.character_id AND s.ending = true "
-            + "WHERE m.id = :memberId "
-            + "GROUP BY m.id, m.email, m.nickname", nativeQuery = true)
-    Optional<UserInfoDto> findMemberInfoById(Long memberId);
+            + "WHERE u.id = :userId "
+            + "GROUP BY u.id, u.email, u.nickname", nativeQuery = true)
+    Optional<UserInfoDto> findMemberInfoById(Long userId);
 }
