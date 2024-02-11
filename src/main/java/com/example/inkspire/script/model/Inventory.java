@@ -1,4 +1,4 @@
-package com.example.inkspire.inventory.model;
+package com.example.inkspire.script.model;
 
 import com.example.inkspire.character.model.Character;
 import jakarta.persistence.Entity;

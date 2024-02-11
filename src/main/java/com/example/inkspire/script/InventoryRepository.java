@@ -1,6 +1,6 @@
-package com.example.inkspire.inventory;
+package com.example.inkspire.script;
 
-import com.example.inkspire.inventory.model.Inventory;
+import com.example.inkspire.script.model.Inventory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
