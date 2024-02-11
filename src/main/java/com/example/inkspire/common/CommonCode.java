@@ -9,6 +9,9 @@ public enum CommonCode {
     SF("GENRE", "SF"),
     HORROR("GENRE", "호러"),
     MYSTERY("GENRE", "추리"),
+    ITEM("GOAL", "ITEM"),
+    REPORT("GOAL", "REPORT"),
+    MONSTER("GOAL", "MONSTER"),
     NOT_FOUND("ERROR","not found");
 
     private final String category;
