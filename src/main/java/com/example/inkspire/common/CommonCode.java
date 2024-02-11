@@ -6,17 +6,21 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CommonCode {
-    SF("GENRE", "SF"),
-    HORROR("GENRE", "호러"),
-    MYSTERY("GENRE", "추리"),
+    RECOVER("ITEM", "RECOVER"),
+    WEAPON("ITEM", "WEAPON"),
+    MOB("ITEM", "MOB"),
 
     ITEM("GOAL", "ITEM"),
     REPORT("GOAL", "REPORT"),
     MONSTER("GOAL", "MONSTER"),
 
-    RECOVER("ITEM", "RECOVER"),
-    WEAPON("ITEM", "WEAPON"),
-    MOB("ITEM", "MOB"),
+    SYSTEM("ROLE", "SYSTEM"),
+    ASSISTANT("ROLE", "ASSISTANT"),
+    USER("ROLE", "USER"),
+
+    SF("GENRE", "SF"),
+    HORROR("GENRE", "호러"),
+    MYSTERY("GENRE", "추리"),
 
     NOT_FOUND("ERROR","not found");
 
