@@ -8,6 +8,8 @@ import com.example.inkspire.common.errors.ErrorCode;
 import com.example.inkspire.common.errors.GeneralException;
 import com.example.inkspire.script.model.Goal;
 import com.example.inkspire.script.model.GoalDto;
+import com.example.inkspire.script.model.Item;
+import com.example.inkspire.script.model.ItemDto;
 import com.example.inkspire.script.model.Map;
 import com.example.inkspire.script.model.MapDto;
 import com.example.inkspire.script.model.Npc;
@@ -24,8 +26,11 @@ public class ScriptService {
     private final NpcRepository npcRepository;
     private final MapRepository mapRepository;
     private final GoalRepository goalRepository;
+    private final ItemRepository itemRepositorye;
+
     private final String COMMON_CODE_GENRE = "GENRE";
     private final String COMMON_CODE_GOAL = "GOAL";
+    private final String COMMON_CODE_ITEM = "ITEM";
 
     /* 스크립트 정보 저장 */
     @CharacterAuthentication
@@ -103,6 +108,27 @@ public class ScriptService {
                 .build();
 
         Goal saved = goalRepository.save(goal);
+
+        return DataResponseDto.of(saved.getId());
+    }
+
+    /* 아이템 정보 저장 */
+    public DataResponseDto<Long> createItem(ItemDto itemDto) {
+        Map map = mapRepository.findById(itemDto.getMapId())
+                .orElseThrow(() -> new GeneralException(ErrorCode.MAP_NOT_FOUND));
+
+        // 존재하지 않는 아이템 타입일 경우 예외 처리
+        if (CommonCode.of(COMMON_CODE_ITEM, itemDto.getType()).equals(CommonCode.NOT_FOUND)) {
+            throw new GeneralException(ErrorCode.ITEM_TYPE_NOT_FOUND);
+        }
+
+        Item item = Item.builder()
+                .map(map)
+                .name(itemDto.getName())
+                .detail(itemDto.getDetail())
+                .type(CommonCode.of(COMMON_CODE_ITEM, itemDto.getType())).build();
+
+        Item saved = itemRepositorye.save(item);
 
         return DataResponseDto.of(saved.getId());
     }
