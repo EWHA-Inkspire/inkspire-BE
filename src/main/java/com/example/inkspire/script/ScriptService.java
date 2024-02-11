@@ -1,12 +1,13 @@
 package com.example.inkspire.script;
 
-import com.example.inkspire.character.CharacterRepository;
 import com.example.inkspire.character.model.Character;
 import com.example.inkspire.common.CommonCode;
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.common.annotation.CharacterAuthentication;
 import com.example.inkspire.common.errors.ErrorCode;
 import com.example.inkspire.common.errors.GeneralException;
+import com.example.inkspire.script.model.Goal;
+import com.example.inkspire.script.model.GoalDto;
 import com.example.inkspire.script.model.Map;
 import com.example.inkspire.script.model.MapDto;
 import com.example.inkspire.script.model.Npc;
@@ -22,14 +23,16 @@ public class ScriptService {
     private final ScriptRepository scriptRepository;
     private final NpcRepository npcRepository;
     private final MapRepository mapRepository;
-    private final String COMMON_CODE = "GENRE";
+    private final GoalRepository goalRepository;
+    private final String COMMON_CODE_GENRE = "GENRE";
+    private final String COMMON_CODE_GOAL = "GOAL";
 
     /* 스크립트 정보 저장 */
     @CharacterAuthentication
     public DataResponseDto<Long> createScript(Long characterId, ScriptDto scriptDto) {
 
         // 존재하지 않는 장르일 경우 예외 처리
-        if (CommonCode.of(COMMON_CODE, scriptDto.getGenre()).equals(CommonCode.NOT_FOUND)) {
+        if (CommonCode.of(COMMON_CODE_GENRE, scriptDto.getGenre()).equals(CommonCode.NOT_FOUND)) {
             throw new GeneralException(ErrorCode.GENRE_NOT_FOUND);
         }
 
@@ -37,7 +40,7 @@ public class ScriptService {
                 .character(Character.builder().id(characterId).build())
                 .time(scriptDto.getTime())
                 .place(scriptDto.getPlace())
-                .genre(CommonCode.of(COMMON_CODE, scriptDto.getGenre()))
+                .genre(CommonCode.of(COMMON_CODE_GENRE, scriptDto.getGenre()))
                 .build();
 
         Script saved = scriptRepository.save(script);
@@ -76,6 +79,30 @@ public class ScriptService {
                 .build();
 
         Map saved = mapRepository.save(map);
+
+        return DataResponseDto.of(saved.getId());
+    }
+
+    /* 목표 정보 저장 */
+    public DataResponseDto<Long> createGoal(GoalDto goalDto) {
+        Script script = scriptRepository.findById(goalDto.getScriptId())
+                .orElseThrow(() -> new GeneralException(ErrorCode.SCRIPT_NOT_FOUND));
+
+        // 존재하지 않는 목표 타입일 경우 예외 처리
+        if (CommonCode.of(COMMON_CODE_GOAL, goalDto.getType()).equals(CommonCode.NOT_FOUND)) {
+            throw new GeneralException(ErrorCode.GOAL_NOT_FOUND);
+        }
+
+        Goal goal = Goal.builder()
+                .script(script)
+                .chapter(goalDto.getChapter())
+                .content(goalDto.getContent())
+                .type(CommonCode.of(COMMON_CODE_GOAL, goalDto.getType()))
+                .required(goalDto.getContent())
+                .etc(goalDto.getEtc())
+                .build();
+
+        Goal saved = goalRepository.save(goal);
 
         return DataResponseDto.of(saved.getId());
     }
