@@ -1,6 +1,5 @@
 package com.example.inkspire.character.model;
 
-import com.example.inkspire.common.UserExist;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CharacterDto {
     @NotNull(message = "유저 ID는 필수 입력 값입니다.")
-    @UserExist
     private Long userId;
 
     @NotBlank(message = "캐릭터 이름은 필수 입력 값입니다.")

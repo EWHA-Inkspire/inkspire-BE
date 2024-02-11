@@ -30,7 +30,7 @@ public class CharacterController {
     /* 캐릭터 정보 저장 */
     @PostMapping
     public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody @Valid CharacterDto characterDto) {
-        DataResponseDto<Long> response = characterService.createCharacter(characterDto);
+        DataResponseDto<Long> response = characterService.createCharacter(characterDto.getUserId(), characterDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 }
