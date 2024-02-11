@@ -4,7 +4,7 @@ import com.example.inkspire.character.model.ChapterListDto;
 import com.example.inkspire.character.model.Character;
 import com.example.inkspire.character.model.CharacterDto;
 import com.example.inkspire.common.DataResponseDto;
-import com.example.inkspire.common.annotation.RequiresAuthentication;
+import com.example.inkspire.common.annotation.UserAuthentication;
 import com.example.inkspire.user.model.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class CharacterService {
     }
 
     /* 캐릭터 생성 */
-    @RequiresAuthentication
+    @UserAuthentication
     public DataResponseDto<Long> createCharacter(Long userId, CharacterDto characterDto) {
         Character character = Character.builder()
                 .user(User.builder().id(userId).build())
