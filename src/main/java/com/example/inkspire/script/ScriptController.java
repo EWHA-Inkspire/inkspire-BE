@@ -2,6 +2,7 @@ package com.example.inkspire.script;
 
 import com.example.inkspire.common.DataResponseDto;
 import com.example.inkspire.script.model.GoalDto;
+import com.example.inkspire.script.model.ItemDto;
 import com.example.inkspire.script.model.MapDto;
 import com.example.inkspire.script.model.NpcInfoDto;
 import com.example.inkspire.script.model.ScriptDto;
@@ -46,6 +47,13 @@ public class ScriptController {
     @PostMapping("/goal")
     public ResponseEntity<DataResponseDto<Long>> createGoal(@RequestBody @Valid GoalDto goalDto) {
         DataResponseDto<Long> response = scriptService.createGoal(goalDto);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    }
+
+    /* 아이템 정보 저장 */
+    @PostMapping("/item")
+    public ResponseEntity<DataResponseDto<Long>> createItem(@RequestBody @Valid ItemDto itemDto) {
+        DataResponseDto<Long> response = scriptService.createItem(itemDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 }
