@@ -23,20 +23,20 @@ public class ScriptController {
     /* 스크립트 정보 저장 */
     @PostMapping
     public ResponseEntity<DataResponseDto<Long>> createScript(@RequestBody @Valid ScriptDto scriptDto) {
-        DataResponseDto<Long> response = scriptService.createScript(scriptDto);
+        DataResponseDto<Long> response = scriptService.createScript(scriptDto.getCharacterId(), scriptDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* npc 정보 저장 */
     @PostMapping("/npc")
-    public ResponseEntity<DataResponseDto<Long>> createNpc(@RequestBody NpcInfoDto npcInfoDto) {
+    public ResponseEntity<DataResponseDto<Long>> createNpc(@RequestBody @Valid NpcInfoDto npcInfoDto) {
         DataResponseDto<Long> response = scriptService.createNpc(npcInfoDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 
     /* 맵 정보 저장 */
     @PostMapping("/map")
-    public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody MapDto mapDto) {
+    public ResponseEntity<DataResponseDto<Long>> createCharacter(@RequestBody @Valid MapDto mapDto) {
         DataResponseDto<Long> response = scriptService.createMap(mapDto);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
