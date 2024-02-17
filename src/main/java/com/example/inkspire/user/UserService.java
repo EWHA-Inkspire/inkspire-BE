@@ -2,8 +2,6 @@ package com.example.inkspire.user;
 
 import com.example.inkspire.character.model.CharacterInfoDto;
 import com.example.inkspire.character.model.CharacterListDto;
-import com.example.inkspire.common.DataResponseDto;
-import com.example.inkspire.common.ResponseDto;
 import com.example.inkspire.common.errors.ErrorCode;
 import com.example.inkspire.common.errors.GeneralException;
 import com.example.inkspire.config.ShaUtil;
@@ -22,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     /* 회원가입 */
-    public ResponseDto createMember(SignupDto signupDto) {
+    public void createMember(SignupDto signupDto) {
 
         // 이메일 중복 검증
         if (!validateDuplicated(signupDto.getEmail())) {
@@ -41,8 +39,6 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
-
-        return ResponseDto.success(HttpStatus.CREATED);
     }
 
     /* 이메일 중복 검증 */
@@ -51,7 +47,7 @@ public class UserService {
     }
 
     /* 로그인 */
-    public DataResponseDto<Long> join(LoginDto loginDto) {
+    public Long join(LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
 
@@ -62,7 +58,7 @@ public class UserService {
             throw new GeneralException(ErrorCode.USER_WRONG_PASSWORD);
         }
 
-        return DataResponseDto.of(user.getId());
+        return user.getId();
     }
 
     /* 비밀번호 검증 */
@@ -74,7 +70,7 @@ public class UserService {
     }
 
     /* 캐릭터 리스트 조회 */
-    public DataResponseDto<CharacterListDto> getCharacterList(Long id) {
+    public CharacterListDto getCharacterList(Long id) {
         // 유저가 존재하는지 검증
         userRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
@@ -83,18 +79,16 @@ public class UserService {
 
         if (characterList.isEmpty()) {
             // 캐릭터 리스트가 없을 경우에 대한 예외 처리 -> 빈 리스트를 반환
-            return DataResponseDto.of(new CharacterListDto());
+            return new CharacterListDto();
         } else {
-            return DataResponseDto.of(new CharacterListDto(characterList));
+            return new CharacterListDto(characterList);
         }
     }
 
     /* 프로필 정보 조회 */
-    public DataResponseDto<UserInfoDto> gerUserInfo(Long userId) {
-        UserInfoDto userInfo = userRepository.findMemberInfoById(userId)
+    public UserInfoDto gerUserInfo(Long userId) {
+        return userRepository.findMemberInfoById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
-
-        return DataResponseDto.of(userInfo);
     }
 
 }

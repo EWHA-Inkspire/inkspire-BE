@@ -3,9 +3,11 @@ package com.example.inkspire.character.model;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class CharacterDto {
     @NotNull(message = "유저 ID는 필수 입력 값입니다.")

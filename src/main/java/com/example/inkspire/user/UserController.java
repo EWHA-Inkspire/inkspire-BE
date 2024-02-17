@@ -1,8 +1,7 @@
 package com.example.inkspire.user;
 
 import com.example.inkspire.character.model.CharacterListDto;
-import com.example.inkspire.common.DataResponseDto;
-import com.example.inkspire.common.ResponseDto;
+import com.example.inkspire.common.response.Response;
 import com.example.inkspire.user.model.LoginDto;
 import com.example.inkspire.user.model.SignupDto;
 import com.example.inkspire.user.model.UserInfoDto;
@@ -26,27 +25,33 @@ public class UserController {
 
     /* 회원가입 */
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto> signup(@RequestBody @Valid SignupDto signupDto) {
-        ResponseDto response = userService.createMember(signupDto);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public ResponseEntity<Response> signup(@RequestBody @Valid SignupDto signupDto) {
+        userService.createMember(signupDto);
+
+        return Response.of(HttpStatus.CREATED);
     }
 
     /* 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<DataResponseDto<Long>> login(@RequestBody @Valid LoginDto loginDto) {
-        return new ResponseEntity<>(userService.join(loginDto), HttpStatus.OK);
+    public ResponseEntity<Response> login(@RequestBody @Valid LoginDto loginDto) {
+        Long userId = userService.join(loginDto);
+
+        return Response.of(HttpStatus.OK, userId);
     }
 
     /* 캐릭터 리스트 조회 */
     @GetMapping("{userId}/characterList")
-    public ResponseEntity<DataResponseDto<CharacterListDto>> getCharacterList(@PathVariable Long userId) {
-        DataResponseDto<CharacterListDto> response = userService.getCharacterList(userId);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public ResponseEntity<Response> getCharacterList(@PathVariable Long userId) {
+        CharacterListDto characterList = userService.getCharacterList(userId);
+
+        return Response.of(HttpStatus.OK, characterList);
     }
 
     /* 프로필 정보 조회 */
     @GetMapping("/{userId}/profile")
-    public ResponseEntity<DataResponseDto<UserInfoDto>> profile(@PathVariable Long userId) {
-        return new ResponseEntity<>(userService.gerUserInfo(userId), HttpStatus.OK);
+    public ResponseEntity<Response> profile(@PathVariable Long userId) {
+        UserInfoDto userInfoDto = userService.gerUserInfo(userId);
+
+        return Response.of(HttpStatus.OK, userInfoDto);
     }
 }
