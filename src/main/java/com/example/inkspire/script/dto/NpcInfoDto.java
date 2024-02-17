@@ -1,4 +1,4 @@
-package com.example.inkspire.script.model;
+package com.example.inkspire.script.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
