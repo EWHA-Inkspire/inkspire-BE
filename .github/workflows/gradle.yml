@@ -1,17 +1,7 @@
-# gradle.yml
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
+name: Build & Deploy Spring Boot Application
 
 on:
   push:
-    branches: [ "dev" ]
-  pull_request:
     branches: [ "dev" ]
 
 permissions:
@@ -19,7 +9,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -31,7 +22,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # gradle caching
+      # gradle caching - 빌드 시간 향상
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -42,70 +33,60 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # application-secret.yml 추가
-      - name: Create application-secret.yml
+      - name: Create application.yml
         run: |
-          mkdir ./src/main/resources
-          touch ./src/main/resources/application.yml
-          echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application.yml
-        shell: bash
-
-      # gradle 빌드 권한 설정
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          touch ./src/main/resources/application.yml 
+          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
 
       - name: Build with Gradle
         run: |
-          ./gradlew build
+          cd ./server
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
 
-      # 빌드해서 생긴 JAR 파일을 깃허브 아티팩트로 업로드
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: inkspire-BE
-          path: build/libs/inkspire-BE-0.0.1-SNAPSHOT.jar
-
-      - name: Cleanup Gradle Cache
-        if: ${{ always() }}
+      # docker build & push to production
+      - name: Docker build & push
         run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
-
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_USERNAME }}/inkspire .
+          docker push ${{ secrets.DOCKER_USERNAME }}/inkspire
+  
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+
+    runs-on: ubuntu-22.04
 
     steps:
+      - name: Get Github Actions IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      # 위의 빌드작업한 JAR 파일 = 아티팩트를 다운로드
-      - name: Download build artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: inkspire-BE
-          path: build/libs/
-
-      # EC2에 배포
-      # EC2 SSH 키를 private_key.pem 파일로 저장 ( 위치는 GitHub 서버 )
-      # SCP를 사용하여 JAR 파일을 EC2 서버로 복사
-      # SSH를 사용하여 EC2 서버에 연결하고 현재 실행 중인 Java 프로세스를 종료한 다음 새로운 Java 프로세스 생성 및 실행!!
-      ## NLP 적용하면 IP -> 도메인으로 수정 + EC2 늘리면 run 추가
-      - name: copy jar file to EC2
+      - name: Add Github Actions IP to Security group
         run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-          scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/inkspire-BE-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER_NAME }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.EC2_USER_NAME }}/inkspire-BE.jar
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_EC2_SG }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-      - name: deploy to EC2
-        uses: appleboy/ssh-action@master
+      - name: Deploy
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.EC2_USER_NAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          port: 22
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sh /home/ubuntu/actions-runner/deploy.sh
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q -f status=exited)
+            docker rm $(docker ps -a -q -f status=created)
+            docker rmi $(docker images -q)
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            docker run -d -p 443:80 -p 80:80 -p 8080:8080 -v /home/${{ secrets.EC2_USERNAME }}/data:/data --name inkspireServer ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+
+      - name: Remove Github Actions IP From Security Group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_EC2_SG }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
