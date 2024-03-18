@@ -19,8 +19,8 @@ public enum CommonCode {
     USER("ROLE", "USER"),
 
     SF("GENRE", "SF"),
-    HORROR("GENRE", "호러"),
-    MYSTERY("GENRE", "추리"),
+    HORROR("GENRE", "HORROR"),
+    MYSTERY("GENRE", "MYSTERY"),
 
     NOT_FOUND("ERROR","not found");
 
@@ -29,6 +29,8 @@ public enum CommonCode {
 
     public static CommonCode of(String category, String description) {
         for (CommonCode c : values()) {
+            category = category.toUpperCase();
+            description = description.toUpperCase();
             if (c.category.equals(category) && c.description.equals(description)) {
                 return c;
             }
